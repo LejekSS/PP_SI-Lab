@@ -1,4 +1,4 @@
-(define (rozsypanka)
+(define (problem p1)
     (:domain world-of-blocks)
     (:objects a b c d e f)
     
