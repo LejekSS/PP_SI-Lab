@@ -1,2 +1,2 @@
 # PP_SI-Lab
-Laboratoria Szucznej Inteligencji Politechnika Poznańska 2025
+Laboratoria Sztucznej Inteligencji Politechnika Poznańska 2025
