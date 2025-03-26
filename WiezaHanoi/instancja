@@ -1,0 +1,34 @@
+(define (problem p1)
+    (:domain hanoi)
+    (:objects k1 k2 k3 k4 k5 - disk x y z - rod)
+    (:init
+        (bigger k5 k4)  ; Poprawiona hierarchia wielkości dysków!
+        (bigger k4 k3)
+        (bigger k3 k2)
+        (bigger k2 k1)
+        
+        (on-rod k5 x)   ; Największy dysk na dole
+        (on-rod k4 x)
+        (on-rod k3 x)
+        (on-rod k2 x)
+        (on-rod k1 x)
+        
+        (on-top k4 k5)  ; k4 na k5 (większy pod spodem)
+        (on-top k3 k4)
+        (on-top k2 k3)
+        (on-top k1 k2)
+        
+        (on-bottom k5)  ; k5 jest na dnie pręta x
+        (clear k1)      ; k1 jest na wierzchu
+        
+        (empty y)
+        (empty z)
+        (not (empty x))
+    )
+    
+    (:goal
+        (and
+            (on-rod k1 z) ; Przykładowy cel (możesz dodać więcej)
+        )
+    )
+)
