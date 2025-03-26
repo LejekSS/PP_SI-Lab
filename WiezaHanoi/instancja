@@ -32,3 +32,30 @@
         )
     )
 )
+
+
+
+(define (problem p1)
+  (:domain hanoi)
+  (:objects k1 k2 k3 k4 k5 - disk x y z - rod)
+  (:init
+    (bigger k5 k4) (bigger k5 k3) (bigger k5 k2) (bigger k5 k1)
+    (bigger k4 k3) (bigger k4 k2) (bigger k4 k1)
+    (bigger k3 k2) (bigger k3 k1)
+    (bigger k2 k1)
+
+    (on-rod k5 x)
+    (on-rod k4 x) (on-top k4 k5)
+    (on-rod k3 x) (on-top k3 k4)
+    (on-rod k2 x) (on-top k2 k3)
+    (on-rod k1 x) (on-top k1 k2)
+    
+    (clear k1)
+    (empty y)
+    (empty z)
+  )
+  (:goal (and
+    (on-rod k2 z)
+    (on-rod k1 y)
+  ))
+)
