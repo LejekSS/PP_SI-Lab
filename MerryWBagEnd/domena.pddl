@@ -5,9 +5,9 @@
 	(:constants null - block)
 	(:predicates
 		(passage ?r1 ?r2 - room ?c - color)
-		(merry-w ?r - room)
-		(ball-w ?b - ball ?r - room)
-		(merry-ma ?b - ball)
+		(merry-in ?r - room)
+		(ball-in) ?b - ball ?r - room)
+		(merry-have ?b - ball)
 		(ball-color ?b - ball ?c - color)
 		(blockade-in ?r - room)
 		(next-to ?f1 ?f2 - field)
@@ -18,29 +18,29 @@
 		:precondition
 		(and
 			(ball-color ?b ?c)
-			(ball-w ?b ?r)
-			(merry-w ?r)
+			(ball-in) ?b ?r)
+			(merry-in ?r)
 		)
 		:effect
 		(and
-			(merry-ma ?b)
-			(not (ball-w ?b ?r))
+			(merry-have ?b)
+			(not (ball-in) ?b ?r))
 		)
 	)
 	(:action idz
 		:parameters (?rTo ?rFrom - room ?c - color ?b - ball)
 		:precondition
 		(and
-			(merry-w ?rFrom)
+			(merry-in ?rFrom)
 			(passage ?rFrom ?rTo ?c)
-			(merry-ma ?b)
+			(merry-have ?b)
 			(ball-color ?b ?c) 
 		)
 		:effect
 		(and
-			(not (merry-ma ?b))
-			(not (merry-w ?rFrom))
-			(merry-w ?rTo)
+			(not (merry-have ?b))
+			(not (merry-in ?rFrom))
+			(merry-in ?rTo)
 		)
 	)
 	(:action przesun
@@ -49,7 +49,7 @@
 		(and
 			(not (= ?k null))
 			(blockade-in ?r)
-			(merry-w ?r)
+			(merry-in ?r)
 			(or (next-to ?f1 ?f2)(next-to ?f2 ?f1))
 			(number-on ?k ?f1)
 			(number-on null ?f2)
