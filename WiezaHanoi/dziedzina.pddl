@@ -1,68 +1,73 @@
-(define (domain hanoi) 
-  (:requirements :adl)
-  (:types disk rod)
-  (:constants x y z - rod)
-  (:predicates
-    (on-rod ?x ?y)
-    (on-top ?x ?y)
-    (on-bottom ?x)
-    (clear ?x)
-    (bigger ?x ?y)
-    (empty ?y)
-  )
-  (:action przesun-na-pusty
-    :parameters (?x - disk ?y - rod ?z - rod)
-    :precondition 
-    (and
-        (on-rod ?x ?y)
-        (clear ?x)
-        (empty ?z)
-    )
-    :effect (and
-        (not (on-rod ?x ?y))
-        (on-rod ?x ?z)
-        (not(empty ?z))
-        (clear ?x)
-
-        
-    )
-  )
-)
-
-
-
-(define (domain hanoi) 
+(define
+    (domain hanoi)
     (:requirements :adl)
     (:types disk rod)
-    (:constants x y z - rod)
     (:predicates
-        (on-rod ?x - disk ?y - rod)
-        (on-top ?top - disk ?bottom - disk)
-        (clear ?x - disk)
-        (bigger ?bigger - disk ?smaller - disk)
-        (empty ?y - disk)
+        (clear ?x)    
+        (on-top ?x ?y)
+        (on-floor ?k)
+        (on-rod ?x ?k)
+        (empty ?x)
+        (bigger ?x ?y)
     )
+
     (:action przesun-na-pusty
-        :parameters (?source - rod ?target - rod ?disk - disk)
-        :precondition 
+        :parameters (?from ?to ?disc) 
+        :precondition
         (and
-            (on-rod ?disk ?source)
-            (clear ?disk)
-            (empty ?target)
+            (not (= ?from ?to))
+            (empty ?to)
+            (on-rod ?from ?disc)
+            (clear ?disc)
         )
-        :effect (and
-            (not (on-rod ?disk ?source))
-            (on-rod ?disk ?target)
-            (not(empty ?target))
-            (clear ?disk)
-            (forall (?underdisk - disk)
-                (when (on-top ?disk ?underdisk)
-                    (and
-                        (not (on-top ?disk ?underdisk))
-                        (clear ?underdisk)
-                    )
-                )
+        :effect
+        (and
+            (when (on-floor ?disc)
+                (empty ?from)
             )
+            (not (empty ?to))
+            (not (on-rod ?from ?disc))
+            (on-rod ?to ?disc)
+            (on-floor ?disc)
+            (forall (?otherdisc - disk)
+            (when (and (on-top ?disc ?otherdisc) (on-rod ?from ?otherdisc))
+            (and
+                (clear ?otherdisc)
+                (not (on-top ?disc ?otherdisc))
+                )
+            ))
+        )
+    )
+    
+    (:action przesun
+        :parameters (?from ?to ?topdisc ?bottomdisc) 
+        :precondition
+        (and
+            (not (= ?from ?to))
+            (not (= ?topdisc ?bottomdisc))
+            (clear ?topdisc)
+            (clear ?bottomdisc)
+            (on-rod ?from ?topdisc)
+            (on-rod ?to ?bottomdisc)
+            (not (bigger ?topdisc ?bottomdisc))
+        )
+        :effect
+        (and
+            (when (on-floor ?topdisc)
+                (empty ?from)
+            )
+            (on-rod ?to ?topdisc)
+            (not (on-rod ?from ?topdisc))
+            (not (on-floor ?topdisc))
+            (forall (?otherdisc - disk)
+            (when (and (on-top ?topdisc ?otherdisc) (on-rod ?from ?otherdisc))
+            (and
+                (clear ?otherdisc)
+                (not (on-top ?topdisc ?otherdisc))
+                )
+            ))
+             (on-top ?topdisc ?bottomdisc)
+             (not (clear ?bottomdisc))
         )
     )
 )
